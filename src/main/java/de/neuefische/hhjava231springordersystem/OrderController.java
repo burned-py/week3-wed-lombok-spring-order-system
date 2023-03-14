@@ -8,7 +8,11 @@ import java.util.List;
 @RequestMapping("api")
 public class OrderController {
 
-    private ShopService shopService = new ShopService();
+    private final ShopService shopService;
+
+    public OrderController(ShopService shopService) {
+        this.shopService = shopService;
+    }
 
     @GetMapping("orders")
     public List<Order> getOrders() {
