@@ -1,16 +1,20 @@
 package de.neuefische.hhjava231springordersystem;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+@Service
 public class ShopService {
 
-    private ProductRepository productRepository;
-    private OrderRepository orderRepository = new OrderRepository();
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
 
-    public ShopService() {
+    public ShopService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
         productRepository = new ProductRepository();
     }
 
