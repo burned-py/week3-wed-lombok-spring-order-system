@@ -24,7 +24,7 @@ public class OrderController {
         return shopService.getOrder(id);
     }
 
-    @PostMapping("orders/")
+    @PostMapping("orders")
     public Order addOrder(@RequestBody List<String> productIds) {
         return shopService.addOrder(productIds);
     }

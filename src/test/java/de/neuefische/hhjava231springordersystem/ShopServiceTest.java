@@ -7,31 +7,46 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.*;
 
 class ShopServiceTest {
+
+    OrderRepository orderRepository = mock(OrderRepository.class);
+    ProductRepository productRepository = mock(ProductRepository.class);
+    IdService idService = mock(IdService.class);
+    ShopService shopService = new ShopService(productRepository, orderRepository, idService);
 
     @Test
     void addOrder() {
         //GIVEN
-        OrderRepository orderRepository = new OrderRepository();
-        ProductRepository productRepository = new ProductRepository();
-        ShopService shopService = new ShopService(productRepository, orderRepository);
         List<String> productIds = List.of("1");
+
+        when(productRepository.get("1"))
+                .thenReturn(new Product("1", "Apple"));
+        when(orderRepository.add(new Order("randomId", List.of(new Product("1", "Apple")))))
+                .thenReturn(new Order("randomId", List.of(new Product("1", "Apple"))));
+        when(idService.generateId())
+                .thenReturn("randomId");
 
         //WHEN
         Order actual = shopService.addOrder(productIds);
 
         //THEN
-        Order expected = new Order("34c012ba-8824-4d54-ba37-924d66146043", List.of(new Product("1", "Apple")));
+        Order expected = new Order("randomId", List.of(new Product("1", "Apple")));
+
+
+        verify(productRepository).get("1");
+        verify(orderRepository).add(new Order("randomId", List.of(new Product("1", "Apple"))));
+        verify(idService).generateId();
         assertEquals(expected, actual);
     }
 
     @Test
     void addOrder_whenInvalidId_thenThrowException() {
         //GIVEN
-        OrderRepository orderRepository = new OrderRepository();
-        ProductRepository productRepository = new ProductRepository();
-        ShopService shopService = new ShopService(productRepository, orderRepository);
+        when(productRepository.get("3"))
+                .thenReturn(null);
+
         List<String> productIds = List.of("3");
 
         //WHEN
@@ -44,5 +59,6 @@ class ShopServiceTest {
         catch (NoSuchElementException e) {
 
         }
+        verify(productRepository).get("3");
     }
 }

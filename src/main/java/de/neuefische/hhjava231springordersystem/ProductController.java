@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/products")
 public class ProductController {
     private final ShopService shopService;
 
@@ -16,12 +16,12 @@ public class ProductController {
         this.shopService = shopService;
     }
 
-    @GetMapping("products")
+    @GetMapping()
     public List<Product> getProducts() {
         return shopService.listProducts();
     }
 
-    @GetMapping("products/{id}")
+    @GetMapping("{id}")
     public Product getProduct(@PathVariable String id) {
         return shopService.getProduct(id);
     }
