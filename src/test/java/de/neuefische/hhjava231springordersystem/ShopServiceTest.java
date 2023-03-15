@@ -61,4 +61,21 @@ class ShopServiceTest {
         }
         verify(productRepository).get("3");
     }
+
+    @Test
+    void listProducts() {
+        //GIVEN
+        List<Product> products = List.of(new Product("1", "Apple"));
+        when(productRepository.list()).thenReturn(products);
+
+        //WHEN
+
+        List<Product> actual = shopService.listProducts();
+
+        //THEN
+        List<Product> expected = List.of(new Product("1", "Apple"));
+
+        verify(productRepository).list();
+        assertEquals(expected, actual);
+    }
 }

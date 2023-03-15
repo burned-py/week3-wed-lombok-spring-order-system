@@ -27,7 +27,6 @@ public class ProductRepository {
     }
 
     public Product get(String id) {
-        return new Product("Bug", "Bug");
-//        return products.get(id);
+        return products.get(id);
     }
 }
